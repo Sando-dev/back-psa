@@ -1,16 +1,14 @@
-package com.aninfo.integration.cucumber;
+package com.back_end.integration.cucumber;
 
-import com.aninfo.Memo1BankApp;
-import com.aninfo.model.Account;
-import com.aninfo.service.AccountService;
+import com.back_end.PSAApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@ContextConfiguration(classes = Memo1BankApp.class)
+@ContextConfiguration(classes = PSAApp.class)
 @WebAppConfiguration
 public class AccountIntegrationServiceTest {
-
+    /*
     @Autowired
     AccountService accountService;
 
@@ -25,5 +23,5 @@ public class AccountIntegrationServiceTest {
     Account deposit(Account account, Double sum) {
         return accountService.deposit(account.getCbu(), sum);
     }
-
+    */
 }
