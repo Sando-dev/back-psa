@@ -17,6 +17,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
@@ -53,29 +55,38 @@ public class PSAApp {
         return ResponseEntity.of(projectOptional);
     }
 
+    @PutMapping("/projects")
+    public ResponseEntity<Object> updateProject(@RequestBody Project project, @PathVariable Long project_id,
+                                                @PathVariable String lider, @PathVariable String nombre,
+                                                @PathVariable Date fechaInicio, @PathVariable Date fechaFin) {
+        // TODO: agregar casos con espacios en blanco
+        Optional<Project> projectOptional = projectService.findByProjectID(project_id);
+
+        if (!projectOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        project.setLider(lider);
+        project.setNombre(nombre);
+        project.setFechaInicio(fechaInicio);
+        project.setFechaFin(fechaFin);
+        projectService.save(project);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/projects/{project_id}")
     public void deleteProject(@PathVariable Long project_id) {
         projectService.deleteByProjectId(project_id);
     }
 
-    @PutMapping("/projects/{project_id}/{estado}/{fechaInicio}/{fechaFin}/{prioridad}/{titulo}/{descripcion}/{asignado}")
-    public Project createTask(@PathVariable Long project_id, @PathVariable String estado, @RequestParam Date fechaInicio,
-                              @RequestParam Date fechaFin, @PathVariable String prioridad, @PathVariable String titulo,
-                              @PathVariable String descripcion, @PathVariable String asignado) {
-        return projectService.addTask(project_id, estado, fechaInicio, fechaFin,  prioridad, titulo, descripcion, asignado);
-    }
-
-
-    /* Usando TaskService
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
-    @GetMapping("/tasks")
-    public Collection<Task> getTasks() {
-        return taskService.getTasks();
+    @GetMapping("/tasks/projects/{project_id}")
+    public Collection<Task> getTasks(@PathVariable Long project_id) {
+        return taskService.findByProjectId(project_id);
     }
 
     @GetMapping("/tasks/{task_id}")
@@ -88,7 +99,6 @@ public class PSAApp {
     public void deleteTask(@PathVariable Long task_id) {
         taskService.deleteByTaskId(task_id);
     }
-    */
 
     @Bean
     public Docket apiDocket() {

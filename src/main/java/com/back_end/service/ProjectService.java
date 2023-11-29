@@ -37,25 +37,4 @@ public class ProjectService {
     public void deleteByProjectId(Long project_id) {
         projectRepository.deleteById(project_id);
     }
-
-    public Project addTask(Long project_id, String estado, Date fechaInicio, Date fechaFin,
-                        String prioridad, String titulo, String descripcion, String asignado) {
-        Project project = projectRepository.findProjectById(project_id);
-        Task task = new Task(project, estado, fechaInicio, fechaFin, prioridad, titulo, descripcion, asignado);
-
-        taskRepository.save(task);
-        return project;
-    }
-
-    public Task getTask(Long task_id) {
-        return taskRepository.findTaskById(task_id);
-    }
-
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
-    }
-
-    public void deleteTaskById(Long id) {
-        taskRepository.deleteById(id);
-    }
 }

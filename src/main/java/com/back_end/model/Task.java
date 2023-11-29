@@ -24,12 +24,12 @@ public class Task {
     private String estado;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de inicio de la tarea (formato: yyyy-MM-dd)", example = "2023-11-20")
     private Date fechaInicio;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de finalización de la tarea (formato: yyyy-MM-dd)", example = "2023-12-31")
     private Date fechaFin;
 
@@ -62,6 +62,10 @@ public class Task {
 
     public Project getProject() {
         return this.project;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public String getEstado() {
@@ -100,27 +104,27 @@ public class Task {
         this.estado = estado;
     }
 
-    public void getFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public void getFechaFin(Date fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public void getPrioridad(String prioridad) {
+    public void setPrioridad(String prioridad) {
         this.prioridad = prioridad;
     }
 
-    public void getTitulo(String titulo) {
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
-    public void getDescripcion(String descripcion) {
+    public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public void getAsignado(String asignado) {
+    public void setAsignado(String asignado) {
         this.asignado = asignado;
     }
 }
