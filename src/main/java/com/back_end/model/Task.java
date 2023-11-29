@@ -3,7 +3,6 @@ package com.back_end.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,12 +23,12 @@ public class Task {
     private String estado;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    //@Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de inicio de la tarea (formato: yyyy-MM-dd)", example = "2023-11-20")
     private Date fechaInicio;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    //@Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de finalización de la tarea (formato: yyyy-MM-dd)", example = "2023-12-31")
     private Date fechaFin;
 

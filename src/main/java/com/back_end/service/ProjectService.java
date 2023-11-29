@@ -1,7 +1,5 @@
 package com.back_end.service;
 
-
-import com.back_end.model.Task;
 import com.back_end.repository.ProjectRepository;
 import com.back_end.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,10 @@ public class ProjectService {
 
     public Project createProject(Project project) {
         return projectRepository.save(project);
+    }
+
+    public Project getProject(Long id) {
+        return projectRepository.findProjectById(id);
     }
 
     public List<Project> getProjects() {

@@ -20,7 +20,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -55,20 +54,24 @@ public class PSAApp {
         return ResponseEntity.of(projectOptional);
     }
 
-    @PutMapping("/projects")
-    public ResponseEntity<Object> updateProject(@RequestBody Project project, @PathVariable Long project_id,
-                                                @PathVariable String lider, @PathVariable String nombre,
-                                                @PathVariable Date fechaInicio, @PathVariable Date fechaFin) {
-        // TODO: agregar casos con espacios en blanco
+    @PutMapping("/projects/{project_id}/{lider}/{nombre}/{fechaInicio}/{fechaFin}")
+    public ResponseEntity<Object> updateProject(@PathVariable Long project_id,  @PathVariable String lider,
+                                                @PathVariable String nombre,  @PathVariable String fechaInicio,
+                                                @PathVariable String fechaFin, @PathVariable String estado) throws ParseException {
         Optional<Project> projectOptional = projectService.findByProjectID(project_id);
+        Project project = projectService.getProject(project_id);
 
         if (!projectOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        project.setFechaInicio(formatter.parse(fechaInicio));
+        project.setFechaFin(formatter.parse(fechaFin));
         project.setLider(lider);
         project.setNombre(nombre);
-        project.setFechaInicio(fechaInicio);
-        project.setFechaFin(fechaFin);
+        project.setEstado(estado);
+
         projectService.save(project);
         return ResponseEntity.ok().build();
     }
@@ -93,6 +96,34 @@ public class PSAApp {
     public ResponseEntity<Task> getTask(@PathVariable Long task_id) {
         Optional<Task> taskOptional = taskService.findByTaskId(task_id);
         return ResponseEntity.of(taskOptional);
+    }
+
+    @PutMapping("/tasks/{task_id}/{project_id}/{estado}/{fechaInicio}/{fechaFin}/{prioridad}/{titulo}/{descripcion}/{asignado}")
+    public ResponseEntity<Object> updateTask(@PathVariable Long task_id, @PathVariable Long project_id,
+                                             @PathVariable String estado, @PathVariable String fechaInicio,
+                                             @PathVariable String fechaFin, @PathVariable String prioridad,
+                                             @PathVariable String titulo,  @PathVariable String descripcion,
+                                             @PathVariable String asignado) throws ParseException {
+        Optional<Task> taskOptional = taskService.findByTaskId(task_id);
+        Task task = taskService.getTask(task_id);
+        Project project = projectService.getProject(project_id);
+
+        if (!taskOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        task.setFechaInicio(formatter.parse(fechaInicio));
+        task.setFechaFin(formatter.parse(fechaFin));
+        task.setProject(project);
+        task.setEstado(estado);
+        task.setPrioridad(prioridad);
+        task.setTitulo(titulo);
+        task.setDescripcion(descripcion);
+        task.setAsignado(asignado);
+
+        taskService.save(task);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/tasks/{task_id}")

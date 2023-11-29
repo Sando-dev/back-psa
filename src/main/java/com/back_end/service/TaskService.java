@@ -19,6 +19,10 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public Task getTask(Long id) {
+        return taskRepository.findTaskById(id);
+    }
+
     public List<Task> getTasks() {
         return taskRepository.findAll();
     }
@@ -31,8 +35,7 @@ public class TaskService {
         List<Task> taskList = taskRepository.findAll();
         ArrayList<Task> projectTasks = new ArrayList<Task>();
 
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
+        for (Task task : taskList) {
             if (Objects.equals(task.getProject().getId(), project_id)) {
                 projectTasks.add(task);
             }
