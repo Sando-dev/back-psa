@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.back_end.model.Project;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 @Service
 public class ProjectService {
@@ -39,4 +41,34 @@ public class ProjectService {
     public void deleteByProjectId(Long project_id) {
         projectRepository.deleteById(project_id);
     }
+
+    public void updateProject(Project project, String lider, String nombre,
+                              String fechaInicio, String fechaFin, String estado) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (fechaInicio != null) {
+            project.setFechaInicio(formatter.parse(fechaInicio));
+        }
+        if (fechaFin != null) {
+            project.setFechaFin(formatter.parse(fechaFin));
+        }
+        if (lider != null) {
+            project.setLider(lider);
+        }
+        if (nombre != null) {
+            project.setNombre(nombre);
+        }
+        if (estado != null) {
+            project.setEstado(estado);
+        }
+        save(project);
+
+    }
+
+    public Project createProjectWithEstado(String estado) {
+        Project project = new Project();
+        project.setEstado(estado);
+        return project;
+    }
+
 }

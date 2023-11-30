@@ -54,27 +54,30 @@ public class PSAApp {
         return ResponseEntity.of(projectOptional);
     }
 
-    @PutMapping("/projects/{project_id}/{lider}/{nombre}/{fechaInicio}/{fechaFin}")
-    public ResponseEntity<Object> updateProject(@PathVariable Long project_id,  @PathVariable String lider,
-                                                @PathVariable String nombre,  @PathVariable String fechaInicio,
-                                                @PathVariable String fechaFin, @PathVariable String estado) throws ParseException {
-        Optional<Project> projectOptional = projectService.findByProjectID(project_id);
-        Project project = projectService.getProject(project_id);
+    @PutMapping("/projects/{project_id}")
+    public ResponseEntity<Object> updateProject(@PathVariable Long project_id,
+                                                @RequestParam(required = false) String lider,
+                                                @RequestParam(required = false) String nombre,
+                                                @RequestParam(required = false) String fechaInicio,
+                                                @RequestParam(required = false) String fechaFin,
+                                                @RequestParam(required = false) String estado) {
+        try {
+            Optional<Project> projectOptional = projectService.findByProjectID(project_id);
 
-        if (!projectOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+            if (projectOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Project project = projectOptional.get();
+
+            projectService.updateProject(project, lider, nombre, fechaInicio, fechaFin, estado);
+            return ResponseEntity.ok().build();
+        } catch (ParseException e) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid date format");
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        project.setFechaInicio(formatter.parse(fechaInicio));
-        project.setFechaFin(formatter.parse(fechaFin));
-        project.setLider(lider);
-        project.setNombre(nombre);
-        project.setEstado(estado);
-
-        projectService.save(project);
-        return ResponseEntity.ok().build();
     }
+
 
     @DeleteMapping("/projects/{project_id}")
     public void deleteProject(@PathVariable Long project_id) {
@@ -98,7 +101,7 @@ public class PSAApp {
         return ResponseEntity.of(taskOptional);
     }
 
-    @PutMapping("/tasks/{task_id}/{project_id}/{estado}/{fechaInicio}/{fechaFin}/{prioridad}/{titulo}/{descripcion}/{asignado}")
+    @PutMapping("/tasks/{task_id}/{project_id}")
     public ResponseEntity<Object> updateTask(@PathVariable Long task_id, @PathVariable Long project_id,
                                              @PathVariable String estado, @PathVariable String fechaInicio,
                                              @PathVariable String fechaFin, @PathVariable String prioridad,
