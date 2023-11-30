@@ -15,9 +15,9 @@ public class Task {
     @ApiModelProperty(notes = "ID de la tarea (generado automáticamente)", example = "0")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    //@ManyToOne
+    @JoinColumn(name = "projectId", nullable = false)
+    private Long projectId;
 
     @ApiModelProperty(notes = "Estado de la tarea", example = "No Iniciada")
     private String estado;
@@ -47,9 +47,9 @@ public class Task {
     public Task() {
     }
 
-    public Task(Project project, String estado, Date fechaInicio, Date fechaFin,
+    public Task(Long projectId, String estado, Date fechaInicio, Date fechaFin,
                 String prioridad, String titulo, String descripcion, String asignado) {
-        this.project = project;
+        this.projectId = projectId;
         this.estado = estado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -59,8 +59,8 @@ public class Task {
         this.asignado = asignado;
     }
 
-    public Project getProject() {
-        return this.project;
+    public Long getProjectId() {
+        return this.projectId;
     }
 
     public Long getId() {
@@ -95,8 +95,8 @@ public class Task {
         return asignado;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public void setEstado(String estado) {

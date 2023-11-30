@@ -54,30 +54,12 @@ public class PSAApp {
         return ResponseEntity.of(projectOptional);
     }
 
-    @PutMapping("/projects/{project_id}")
-    public ResponseEntity<Object> updateProject(@PathVariable Long project_id,
-                                                @RequestParam(required = false) String lider,
-                                                @RequestParam(required = false) String nombre,
-                                                @RequestParam(required = false) String fechaInicio,
-                                                @RequestParam(required = false) String fechaFin,
-                                                @RequestParam(required = false) String estado) {
-        try {
-            Optional<Project> projectOptional = projectService.findByProjectID(project_id);
-
-            if (projectOptional.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            Project project = projectOptional.get();
-
-            projectService.updateProject(project, lider, nombre, fechaInicio, fechaFin, estado);
-            return ResponseEntity.ok().build();
-        } catch (ParseException e) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid date format");
-        }
+    @PutMapping("/projects")
+    public Project updateProject(@RequestBody Project newProject) {
+        projectService.getProject(newProject.getId()); //TODO: levantar excepción (no existe proyecto con ese id)
+        projectService.save(newProject);
+        return newProject;
     }
-
 
     @DeleteMapping("/projects/{project_id}")
     public void deleteProject(@PathVariable Long project_id) {
@@ -90,43 +72,17 @@ public class PSAApp {
         return taskService.createTask(task);
     }
 
-    @GetMapping("/tasks/projects/{project_id}")
+    @GetMapping("/tasks/{project_id}")
     public Collection<Task> getTasks(@PathVariable Long project_id) {
         return taskService.findByProjectId(project_id);
     }
 
-    @GetMapping("/tasks/{task_id}")
-    public ResponseEntity<Task> getTask(@PathVariable Long task_id) {
-        Optional<Task> taskOptional = taskService.findByTaskId(task_id);
-        return ResponseEntity.of(taskOptional);
-    }
-
-    @PutMapping("/tasks/{task_id}/{project_id}")
-    public ResponseEntity<Object> updateTask(@PathVariable Long task_id, @PathVariable Long project_id,
-                                             @PathVariable String estado, @PathVariable String fechaInicio,
-                                             @PathVariable String fechaFin, @PathVariable String prioridad,
-                                             @PathVariable String titulo,  @PathVariable String descripcion,
-                                             @PathVariable String asignado) throws ParseException {
-        Optional<Task> taskOptional = taskService.findByTaskId(task_id);
-        Task task = taskService.getTask(task_id);
-        Project project = projectService.getProject(project_id);
-
-        if (!taskOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        task.setFechaInicio(formatter.parse(fechaInicio));
-        task.setFechaFin(formatter.parse(fechaFin));
-        task.setProject(project);
-        task.setEstado(estado);
-        task.setPrioridad(prioridad);
-        task.setTitulo(titulo);
-        task.setDescripcion(descripcion);
-        task.setAsignado(asignado);
-
-        taskService.save(task);
-        return ResponseEntity.ok().build();
+    @PutMapping("/tasks")
+    public Task updateTask(@RequestBody Task newTask) {
+        projectService.getProject(newTask.getProjectId()); //TODO: levantar excepción
+        taskService.getTask(newTask.getId());
+        taskService.save(newTask);
+        return newTask;
     }
 
     @DeleteMapping("/tasks/{task_id}")

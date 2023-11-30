@@ -36,7 +36,7 @@ public class TaskService {
         ArrayList<Task> projectTasks = new ArrayList<Task>();
 
         for (Task task : taskList) {
-            if (Objects.equals(task.getProject().getId(), project_id)) {
+            if (Objects.equals(task.getProjectId(), project_id)) {
                 projectTasks.add(task);
             }
         }
