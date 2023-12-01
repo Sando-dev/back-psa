@@ -1,5 +1,7 @@
 package com.back_end.service;
 
+import com.back_end.exceptions.InvalidDateException;
+import com.back_end.exceptions.ProjectNotFoundException;
 import com.back_end.repository.ProjectRepository;
 import com.back_end.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,18 @@ public class ProjectService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Project createProject(Project project) {
+    public Project createProject(Project project) throws ParseException {
+        dateVerification(project.getFechaInicio(), project.getFechaFin());
         return projectRepository.save(project);
     }
 
     public Project getProject(Long id) {
-        return projectRepository.findProjectById(id);
+        Project project = projectRepository.findProjectById(id);
+
+        if (project == null) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+        return project;
     }
 
     public List<Project> getProjects() {
@@ -31,7 +39,12 @@ public class ProjectService {
     }
 
     public Optional<Project> findByProjectID(Long project_id) {
-        return projectRepository.findById(project_id);
+        Optional<Project> project = projectRepository.findById(project_id);
+
+        if (project.isEmpty()) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+        return project;
     }
 
     public void save(Project project) {
@@ -42,27 +55,10 @@ public class ProjectService {
         projectRepository.deleteById(project_id);
     }
 
-    public void updateProject(Project project, String lider, String nombre,
-                              String fechaInicio, String fechaFin, String estado) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        if (fechaInicio != null) {
-            project.setFechaInicio(formatter.parse(fechaInicio));
-        }
-        if (fechaFin != null) {
-            project.setFechaFin(formatter.parse(fechaFin));
-        }
-        if (lider != null) {
-            project.setLider(lider);
-        }
-        if (nombre != null) {
-            project.setNombre(nombre);
-        }
-        if (estado != null) {
-            project.setEstado(estado);
-        }
-        save(project);
-
+    public void updateProject(Project newProject) throws ParseException {
+        getProject(newProject.getId());
+        dateVerification(newProject.getFechaInicio(), newProject.getFechaFin());
+        save(newProject);
     }
 
     public Project createProjectWithEstado(String estado) {
@@ -71,4 +67,17 @@ public class ProjectService {
         return project;
     }
 
+    private void dateVerification(Date startDate, Date endDate) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date actualDate = formatter.parse(formatter.format(new Date()));
+
+        if (startDate.getTime() < actualDate.getTime()) {
+            throw new InvalidDateException("Cannot set start date before actual date");
+        } else if (endDate.getTime() < actualDate.getTime()) {
+            throw new InvalidDateException("Cannot set end date before actual date");
+        } else if (startDate.getTime() > endDate.getTime()) {
+            throw new InvalidDateException("Cannot set start date after end date");
+        }
+    }
 }

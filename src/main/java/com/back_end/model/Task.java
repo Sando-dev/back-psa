@@ -15,7 +15,6 @@ public class Task {
     @ApiModelProperty(notes = "ID de la tarea (generado automáticamente)", example = "0")
     private Long id;
 
-    //@ManyToOne
     @JoinColumn(name = "projectId", nullable = false)
     private Long projectId;
 

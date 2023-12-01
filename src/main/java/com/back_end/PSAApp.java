@@ -18,7 +18,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -39,7 +38,7 @@ public class PSAApp {
 
     @PostMapping("/projects")
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createProject(@RequestBody Project project) {
+    public Project createProject(@RequestBody Project project) throws ParseException {
         return projectService.createProject(project);
     }
 
@@ -55,9 +54,8 @@ public class PSAApp {
     }
 
     @PutMapping("/projects")
-    public Project updateProject(@RequestBody Project newProject) {
-        projectService.getProject(newProject.getId()); //TODO: levantar excepción (no existe proyecto con ese id)
-        projectService.save(newProject);
+    public Project updateProject(@RequestBody Project newProject) throws ParseException {
+        projectService.updateProject(newProject);
         return newProject;
     }
 
@@ -68,7 +66,7 @@ public class PSAApp {
 
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@RequestBody Task task) throws ParseException {
         return taskService.createTask(task);
     }
 
@@ -78,10 +76,9 @@ public class PSAApp {
     }
 
     @PutMapping("/tasks")
-    public Task updateTask(@RequestBody Task newTask) {
-        projectService.getProject(newTask.getProjectId()); //TODO: levantar excepción
-        taskService.getTask(newTask.getId());
-        taskService.save(newTask);
+    public Task updateTask(@RequestBody Task newTask) throws ParseException {
+        projectService.getProject(newTask.getProjectId());
+        taskService.updateTask(newTask);
         return newTask;
     }
 
