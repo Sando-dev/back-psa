@@ -20,7 +20,6 @@ public class ProjectOperationsTest extends ProjectIntegrationServiceTest {
         System.out.println("Before any test execution");
     }
 
-    /*
     @Given("^Hay un proyecto en estado (.+)$")
     public void hay_un_proyecto_en_estado(String estado) throws ParseException {
         project = createProject();
@@ -39,7 +38,7 @@ public class ProjectOperationsTest extends ProjectIntegrationServiceTest {
 
 
 
-
+    /*
     @Given("Project with no tasks")
     public void project_with_no_tasks() {
         project = createProject();
