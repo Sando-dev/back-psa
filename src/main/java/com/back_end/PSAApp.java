@@ -19,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -53,6 +54,11 @@ public class PSAApp {
         return ResponseEntity.of(projectOptional);
     }
 
+    @GetMapping("/projects/{project_id}/tasks")
+    public Collection<Task> getTasksByProject(@PathVariable Long project_id) {
+        return taskService.findByProjectId(project_id);
+    }
+
     @PutMapping("/projects")
     public Project updateProject(@RequestBody Project newProject) throws ParseException {
         projectService.updateProject(newProject);
@@ -70,9 +76,9 @@ public class PSAApp {
         return taskService.createTask(task);
     }
 
-    @GetMapping("/tasks/{project_id}")
-    public Collection<Task> getTasks(@PathVariable Long project_id) {
-        return taskService.findByProjectId(project_id);
+    @GetMapping("/tasks")
+    public List<Task> getTasks() {
+        return taskService.getTasks();
     }
 
     @PutMapping("/tasks")
