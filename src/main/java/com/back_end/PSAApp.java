@@ -19,7 +19,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -77,7 +76,7 @@ public class PSAApp {
     }
 
     @GetMapping("/tasks")
-    public List<Task> getTasks() {
+    public Collection<Task> getTasks() {
         return taskService.getTasks();
     }
 
