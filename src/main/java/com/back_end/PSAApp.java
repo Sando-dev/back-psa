@@ -81,6 +81,11 @@ public class PSAApp {
         return taskService.getTasks();
     }
 
+    @GetMapping("/tasks/{task_id}")
+    public Task getTask(Long task_id) {
+        return taskService.getTask(task_id);
+    }
+
     @PutMapping("/tasks")
     public Task updateTask(@RequestBody Task newTask) throws ParseException {
         projectService.getProject(newTask.getProjectId());
