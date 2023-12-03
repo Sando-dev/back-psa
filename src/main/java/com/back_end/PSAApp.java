@@ -17,7 +17,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -36,63 +35,63 @@ public class PSAApp {
         SpringApplication.run(PSAApp.class, args);
     }
 
-    @PostMapping("/projects")
+    @PostMapping("/proyectos")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(@RequestBody Project project) {
         return projectService.createProject(project);
     }
 
-    @GetMapping("/projects")
+    @GetMapping("/proyectos")
     public Collection<Project> getProjects() {
         return projectService.getProjects();
     }
 
-    @GetMapping("/projects/{project_id}")
+    @GetMapping("/proyectos/{project_id}")
     public ResponseEntity<Project> getProject(@PathVariable Long project_id) {
         Optional<Project> projectOptional= projectService.findByProjectID(project_id);
         return ResponseEntity.of(projectOptional);
     }
 
-    @GetMapping("/projects/{project_id}/tasks")
+    @GetMapping("/proyectos/{project_id}/tareas")
     public Collection<Task> getTasksByProject(@PathVariable Long project_id) {
         return taskService.findByProjectId(project_id);
     }
 
-    @PutMapping("/projects")
+    @PutMapping("/proyectos")
     public Project updateProject(@RequestBody Project newProject) {
         projectService.updateProject(newProject);
         return newProject;
     }
 
-    @DeleteMapping("/projects/{project_id}")
+    @DeleteMapping("/proyectos/{project_id}")
     public void deleteProject(@PathVariable Long project_id) {
         projectService.deleteByProjectId(project_id);
     }
 
-    @PostMapping("/tasks")
+    @PostMapping("/tareas")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
-    @GetMapping("/tasks")
+    @GetMapping("/tareas")
     public Collection<Task> getTasks() {
         return taskService.getTasks();
     }
 
-    @GetMapping("/tasks/{task_id}")
+    @GetMapping("/tareas/{task_id}")
     public Task getTask(Long task_id) {
         return taskService.getTask(task_id);
     }
 
-    @PutMapping("/tasks")
+    @PutMapping("/tareas")
     public Task updateTask(@RequestBody Task newTask) {
         projectService.getProject(newTask.getProjectId());
         taskService.updateTask(newTask);
         return newTask;
     }
 
-    @DeleteMapping("/tasks/{task_id}")
+    @DeleteMapping("/tareas/{task_id}")
     public void deleteTask(@PathVariable Long task_id) {
         taskService.deleteByTaskId(task_id);
     }
