@@ -37,24 +37,24 @@ public class PSAApp {
         SpringApplication.run(PSAApp.class, args);
     }
 
-    @PostMapping("/projects")
+    @PostMapping("/proyectos")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(@RequestBody Project project) {
         return projectService.createProject(project);
     }
 
-    @GetMapping("/projects")
+    @GetMapping("/proyectos")
     public Collection<Project> getProjects() {
         return projectService.getProjects();
     }
 
-    @GetMapping("/projects/{project_id}")
+    @GetMapping("/proyectos/{project_id}")
     public ResponseEntity<Project> getProject(@PathVariable Long project_id) {
         Optional<Project> projectOptional= projectService.findByProjectID(project_id);
         return ResponseEntity.of(projectOptional);
     }
 
-    @PutMapping("/projects/{project_id}")
+    @PutMapping("/proyectos/{project_id}")
     public ResponseEntity<Object> updateProject(@PathVariable Long project_id,
                                                 @RequestParam(required = false) String lider,
                                                 @RequestParam(required = false) String nombre,
@@ -79,29 +79,29 @@ public class PSAApp {
     }
 
 
-    @DeleteMapping("/projects/{project_id}")
+    @DeleteMapping("/proyectos/{project_id}")
     public void deleteProject(@PathVariable Long project_id) {
         projectService.deleteByProjectId(project_id);
     }
 
-    @PostMapping("/tasks")
+    @PostMapping("/tareas")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
-    @GetMapping("/tasks/projects/{project_id}")
+    @GetMapping("/tareas/proyectos/{project_id}")
     public Collection<Task> getTasks(@PathVariable Long project_id) {
         return taskService.findByProjectId(project_id);
     }
 
-    @GetMapping("/tasks/{task_id}")
+    @GetMapping("/tareas/{task_id}")
     public ResponseEntity<Task> getTask(@PathVariable Long task_id) {
         Optional<Task> taskOptional = taskService.findByTaskId(task_id);
         return ResponseEntity.of(taskOptional);
     }
 
-    @PutMapping("/tasks/{task_id}/{project_id}")
+    @PutMapping("/tareas/{task_id}/{project_id}")
     public ResponseEntity<Object> updateTask(@PathVariable Long task_id, @PathVariable Long project_id,
                                              @PathVariable String estado, @PathVariable String fechaInicio,
                                              @PathVariable String fechaFin, @PathVariable String prioridad,
@@ -129,7 +129,7 @@ public class PSAApp {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/tasks/{task_id}")
+    @DeleteMapping("/tareas/{task_id}")
     public void deleteTask(@PathVariable Long task_id) {
         taskService.deleteByTaskId(task_id);
     }
