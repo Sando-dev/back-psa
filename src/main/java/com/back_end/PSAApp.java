@@ -38,7 +38,7 @@ public class PSAApp {
 
     @PostMapping("/projects")
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createProject(@RequestBody Project project) throws ParseException {
+    public Project createProject(@RequestBody Project project) {
         return projectService.createProject(project);
     }
 
@@ -59,7 +59,7 @@ public class PSAApp {
     }
 
     @PutMapping("/projects")
-    public Project updateProject(@RequestBody Project newProject) throws ParseException {
+    public Project updateProject(@RequestBody Project newProject) {
         projectService.updateProject(newProject);
         return newProject;
     }
@@ -71,7 +71,7 @@ public class PSAApp {
 
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
-    public Task createTask(@RequestBody Task task) throws ParseException {
+    public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
@@ -86,7 +86,7 @@ public class PSAApp {
     }
 
     @PutMapping("/tasks")
-    public Task updateTask(@RequestBody Task newTask) throws ParseException {
+    public Task updateTask(@RequestBody Task newTask) {
         projectService.getProject(newTask.getProjectId());
         taskService.updateTask(newTask);
         return newTask;
