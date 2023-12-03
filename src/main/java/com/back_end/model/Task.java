@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -22,14 +23,12 @@ public class Task {
     private String estado;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    @ApiModelProperty(notes = "Fecha de inicio de la tarea (formato: yyyy-MM-dd)", example = "2023-11-20")
-    private Date fechaInicio;
+    @ApiModelProperty(notes = "Fecha de inicio de la tarea (formato: yyyy-MM-dd)", example = "2023-12-20")
+    private LocalDate fechaInicio;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de finalización de la tarea (formato: yyyy-MM-dd)", example = "2023-12-31")
-    private Date fechaFin;
+    private LocalDate fechaFin;
 
     @ApiModelProperty(notes = "Prioridad de la tarea", example = "Alta")
     private String prioridad;
@@ -46,7 +45,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long projectId, String estado, Date fechaInicio, Date fechaFin,
+    public Task(Long projectId, String estado, LocalDate fechaInicio, LocalDate fechaFin,
                 String prioridad, String titulo, String descripcion, String asignado) {
         this.projectId = projectId;
         this.estado = estado;
@@ -70,11 +69,11 @@ public class Task {
         return this.estado;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
@@ -102,11 +101,11 @@ public class Task {
         this.estado = estado;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 

@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.back_end.model.Project;
 
+import java.time.LocalDate;
 import java.util.*;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 @Service
 public class ProjectService {
@@ -20,7 +19,7 @@ public class ProjectService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Project createProject(Project project) throws ParseException {
+    public Project createProject(Project project) {
         dateVerification(project.getFechaInicio(), project.getFechaFin());
         return projectRepository.save(project);
     }
@@ -55,7 +54,7 @@ public class ProjectService {
         projectRepository.deleteById(project_id);
     }
 
-    public void updateProject(Project newProject) throws ParseException {
+    public void updateProject(Project newProject) {
         getProject(newProject.getId());
         dateVerification(newProject.getFechaInicio(), newProject.getFechaFin());
         save(newProject);
@@ -67,16 +66,14 @@ public class ProjectService {
         return project;
     }
 
-    private void dateVerification(Date startDate, Date endDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private void dateVerification(LocalDate startDate, LocalDate endDate) {
+        LocalDate actualDate = LocalDate.now();
 
-        Date actualDate = formatter.parse(formatter.format(new Date()));
-
-        if (startDate.getTime() < actualDate.getTime()) {
+        if (startDate.isBefore(actualDate)) {
             throw new InvalidDateException("Cannot set start date before actual date");
-        } else if (endDate.getTime() < actualDate.getTime()) {
+        } else if (endDate.isBefore(actualDate)) {
             throw new InvalidDateException("Cannot set end date before actual date");
-        } else if (startDate.getTime() > endDate.getTime()) {
+        } else if (startDate.isAfter(endDate)) {
             throw new InvalidDateException("Cannot set start date after end date");
         }
     }

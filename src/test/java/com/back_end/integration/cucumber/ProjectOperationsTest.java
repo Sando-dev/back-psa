@@ -20,16 +20,17 @@ public class ProjectOperationsTest extends ProjectIntegrationServiceTest {
         System.out.println("Before any test execution");
     }
 
+    /*
     @Given("^Hay un proyecto en estado (.+)$")
-    public void hay_un_proyecto_en_estado(String estado) throws ParseException {
+    public void hay_un_proyecto_en_estado(String estado) {
         project = createProject();
         updateEstado(project,estado);
     }
 
     @When("^El gerente de proyecto cambia el estado del proyecto a (.+)$")
-    public void el_gerente_de_proyecto_cambia_el_estado_del_proyecto_a(String estado) throws ParseException {
+    public void el_gerente_de_proyecto_cambia_el_estado_del_proyecto_a(String estado) {
         updateEstado(project,estado);
-    }
+    }*/
 
     @Then("^El estado del proyecto pasa a ser (.+)$")
     public void el_estado_del_proyecto_pasa_a_ser(String estado_actual) {

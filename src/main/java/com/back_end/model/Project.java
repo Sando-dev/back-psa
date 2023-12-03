@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @ApiModel(description = "Detalles del proyecto")
@@ -22,14 +22,12 @@ public class Project {
     private String estado;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    @ApiModelProperty(notes = "Fecha de inicio del proyecto (formato: yyyy-MM-dd)", example = "2023-11-20")
-    private Date fechaInicio;
+    @ApiModelProperty(notes = "Fecha de inicio del proyecto (formato: yyyy-MM-dd)", example = "2023-12-20")
+    private LocalDate fechaInicio;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
     @ApiModelProperty(notes = "Fecha de finalización del proyecto (formato: yyyy-MM-dd)", example = "2023-12-31")
-    private Date fechaFin;
+    private LocalDate fechaFin;
 
     @ApiModelProperty(notes = "Nombre del proyecto", example = "SIU Guarani")
     private String nombre;
@@ -37,7 +35,7 @@ public class Project {
     public Project() {
     }
 
-    public Project(String lider, String nombre, Date fechaInicio, Date fechaFin) {
+    public Project(String lider, String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
         this.lider = lider;
         this.estado = "No Iniciado";
         this.fechaInicio = fechaInicio;
@@ -57,11 +55,11 @@ public class Project {
         return estado;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
@@ -77,11 +75,11 @@ public class Project {
         this.estado = estado;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public void setFechaFin (Date fechaFin) {
+    public void setFechaFin (LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 

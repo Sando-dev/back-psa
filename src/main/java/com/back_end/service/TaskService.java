@@ -7,8 +7,7 @@ import com.back_end.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -16,7 +15,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task createTask (Task task) throws ParseException {
+    public Task createTask (Task task) {
         dateVerification(task.getFechaInicio(), task.getFechaFin());
         return taskRepository.save(task);
     }
@@ -58,22 +57,20 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public void updateTask(Task newTask) throws ParseException {
+    public void updateTask(Task newTask) {
         getTask(newTask.getId());
         dateVerification(newTask.getFechaInicio(), newTask.getFechaFin());
         save(newTask);
     }
 
-    private void dateVerification(Date startDate, Date endDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private void dateVerification(LocalDate startDate, LocalDate endDate) {
+        LocalDate actualDate = LocalDate.now();
 
-        Date actualDate = formatter.parse(formatter.format(new Date()));
-
-        if (startDate.getTime() < actualDate.getTime()) {
+        if (startDate.isBefore(actualDate)) {
             throw new InvalidDateException("Cannot set start date before actual date");
-        } else if (endDate.getTime() < actualDate.getTime()) {
+        } else if (endDate.isBefore(actualDate)) {
             throw new InvalidDateException("Cannot set end date before actual date");
-        } else if (startDate.getTime() > endDate.getTime()) {
+        } else if (startDate.isAfter(endDate)) {
             throw new InvalidDateException("Cannot set start date after end date");
         }
     }
