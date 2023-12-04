@@ -23,7 +23,23 @@ public class TaskIntegrationServiceTest {
         return taskService.createTask(task);
     }
 
-    void updateTask(Task task) {
+    void updateTask(Task task, String estado, String asignado, Long projectId, String fechaInicio, String fechaFin,
+                    String prioridad, String titulo, String descripcion) {
+        task.setEstado(estado);
+        task.setPrioridad(prioridad);
+        task.setTitulo(titulo);
+        task.setDescripcion(descripcion);
+        task.setAsignado(asignado);
 
+        if (projectId != null) {
+            task.setProjectId(projectId);
+        }
+        if (fechaInicio != null) {
+            task.setFechaInicio(LocalDate.parse(fechaInicio));
+        }
+        if (fechaFin != null) {
+            task.setFechaFin(LocalDate.parse(fechaFin));
+        }
+        taskService.updateTask(task);
     }
 }

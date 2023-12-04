@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.time.LocalDate;
+
 @ContextConfiguration(classes = PSAApp.class)
 @WebAppConfiguration
 public class ProjectIntegrationServiceTest {
@@ -15,5 +17,19 @@ public class ProjectIntegrationServiceTest {
 
     Project createProject() {
         return projectService.createProject(new Project());
+    }
+
+    void updateProject(Project project, String estado, String lider, String nombre, String fechaInicio, String fechaFin) {
+        project.setLider(lider);
+        project.setNombre(nombre);
+        project.setEstado(estado);
+
+        if (fechaInicio != null) {
+            project.setFechaInicio(LocalDate.parse(fechaInicio));
+        }
+        if (fechaFin != null) {
+            project.setFechaFin(LocalDate.parse(fechaFin));
+        }
+        projectService.updateProject(project);
     }
 }
