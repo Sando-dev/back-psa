@@ -67,6 +67,8 @@ public class ProjectService {
     }
 
     private void dateVerification(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) return;
+
         LocalDate actualDate = LocalDate.now();
 
         if (startDate.isBefore(actualDate)) {

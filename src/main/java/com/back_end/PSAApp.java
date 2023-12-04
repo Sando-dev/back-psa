@@ -80,7 +80,7 @@ public class PSAApp {
     }
 
     @GetMapping("/tareas/{task_id}")
-    public Task getTask(Long task_id) {
+    public Task getTask(@PathVariable Long task_id) {
         return taskService.getTask(task_id);
     }
 
